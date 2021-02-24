@@ -21,18 +21,20 @@ Implementation code for our paper.
    Deep CNN Deepfake detection weight - ~87% accuracy on DFDC dataset (not documented in the thesis)
 
 ### Preprocessing
-extractfaces.py
+extractfaces.py<br />
+   Face extraction from video. <br /> 
    The code works for DFDC dataset. You can test it using the sample data provided. 
 
 #### Predict CViT 
 
 python CViT_prediction.py
    Predicts whether a video is Deepfake or not.
-   <0.5 - REAL
-   >=5  - FAKE
+   Prediction value <0.5 - REAL
+   Prediction value >=5  - FAKE
 
 
 ### Train CViT
+To train the model on your own you can use the following parameter:
 e: epoch
 s: session - GPU or TPU
 w: weight decay  default= 0.0000001
@@ -40,4 +42,4 @@ l: learning rate defualt=0.001
 d: path file
 b: batch size, defualt=32
 
-python cvit_train.py -e 10 -s 'g' -l 0.001 -w 0.0000001 -d sample_train_data/
+python cvit_train.py -e 10 -s 'g' -l 0.0001 -w 0.0000001 -d sample_train_data/
