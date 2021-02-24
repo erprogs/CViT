@@ -14,10 +14,10 @@ Implementation code for our paper.
    * blazeface.pth
 
 ### Weights
-1. cvit_nov16_Auged_90p_50ep.pth
+1. cvit_nov16_Auged_90p_50ep.pth <br/>
    CViT model weight, November 16, 2020, Augmentation=90%, Epoch=50.
 
-2. Deepfake_Oct6_Auged_90p_50ep.pth
+2. Deepfake_Oct6_Auged_90p_50ep.pth <br/>
    Deep CNN Deepfake detection weight - ~87% accuracy on DFDC dataset (not documented in the thesis)
 
 ### Preprocessing
