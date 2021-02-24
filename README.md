@@ -34,12 +34,12 @@ Predicts whether a video is Deepfake or not.<br />
 
 
 ### Train CViT
-To train the model on your own you can use the following parameter:
-&nbsp;&nbsp;e: epoch
-&nbsp;&nbsp;s: session - GPU or TPU
-&nbsp;&nbsp;w: weight decay  default= 0.0000001
-&nbsp;&nbsp;l: learning rate defualt=0.001
-&nbsp;&nbsp;d: path file
-&nbsp;&nbsp;b: batch size, defualt=32
+To train the model on your own you can use the following parameter:<br />
+&nbsp;&nbsp;e: epoch <br/>
+&nbsp;&nbsp;s: session - GPU or TPU <br/>
+&nbsp;&nbsp;w: weight decay  default= 0.0000001 <br/>
+&nbsp;&nbsp;l: learning rate defualt=0.001 <br/>
+&nbsp;&nbsp;d: path file <br/>
+&nbsp;&nbsp;b: batch size, defualt=32 <br/>
 
 python cvit_train.py -e 10 -s 'g' -l 0.0001 -w 0.0000001 -d sample_train_data/
