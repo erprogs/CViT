@@ -46,7 +46,7 @@ python cvit_train.py -e 10 -s 'g' -l 0.0001 -w 0.0000001 -d sample_train_data/
 
 ### Authors
 **Deressa Wodajo** <br />
-**Solomon Atnafu (PhD) **
+**Solomon Atnafu (PhD)**
 
 ### References
 Deressa Wodajo and Solomon Atnafu, "[Deepfake Video Detection Using Convolutional Vision Transformer](https://arxiv.org/abs/2102.11126)," arXiv preprints arXiv:2102.11126, 2021. 
