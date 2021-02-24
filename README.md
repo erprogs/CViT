@@ -27,9 +27,9 @@ extractfaces.py<br />
 
 #### Predict CViT 
 
-python CViT_prediction.py
-   Predicts whether a video is Deepfake or not.
-   Prediction value <0.5 - REAL
+python CViT_prediction.py <br />
+   Predicts whether a video is Deepfake or not.<br />
+   Prediction value <0.5 - REAL <br />
    Prediction value >=5  - FAKE
 
 
