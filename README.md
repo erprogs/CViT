@@ -22,13 +22,13 @@ Implementation code for our paper.
 
 ### Preprocessing
 extractfaces.py<br />
-       Face extraction from video. <br /> 
-       The code works for DFDC dataset. You can test it using the sample data provided. 
+&nbsp;&nbsp;&nbsp;Face extraction from video. <br /> 
+&nbsp;&nbsp;&nbsp;The code works for DFDC dataset. You can test it using the sample data provided. 
 
 #### Predict CViT 
 
 python cvit_prediction.py <br />
-Predicts whether a video is Deepfake or not.<br />
+&nbsp;&nbsp;&nbsp; Predicts whether a video is Deepfake or not.<br />
 &nbsp;&nbsp;&nbsp; Prediction value <0.5 - REAL <br />
 &nbsp;&nbsp;&nbsp; Prediction value >=5  - FAKE
 
