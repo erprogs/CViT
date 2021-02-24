@@ -36,7 +36,7 @@ python cvit_prediction.py <br />
 ### Train CViT
 To train the model on your own you can use the following parameters:<br />
 &nbsp;&nbsp;e: epoch <br/>
-&nbsp;&nbsp;s: session - GPU or TPU <br/>
+&nbsp;&nbsp;s: session - **(g)** - GPU or **(t)** - TPU <br/>
 &nbsp;&nbsp;w: weight decay  default= 0.0000001 <br/>
 &nbsp;&nbsp;l: learning rate defualt=0.001 <br/>
 &nbsp;&nbsp;d: path file <br/>
