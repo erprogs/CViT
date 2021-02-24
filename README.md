@@ -29,17 +29,17 @@ extractfaces.py<br />
 
 python cvit_prediction.py <br />
 Predicts whether a video is Deepfake or not.<br />
-*. Prediction value <0.5 - REAL <br />
-*. Prediction value >=5  - FAKE
+&nbsp;&nbsp;&nbsp; Prediction value <0.5 - REAL <br />
+&nbsp;&nbsp;&nbsp; Prediction value >=5  - FAKE
 
 
 ### Train CViT
 To train the model on your own you can use the following parameter:
-    e: epoch
-    s: session - GPU or TPU
-    w: weight decay  default= 0.0000001
-    l: learning rate defualt=0.001
-    d: path file
-    b: batch size, defualt=32
+&nbsp;&nbsp;e: epoch
+&nbsp;&nbsp;s: session - GPU or TPU
+&nbsp;&nbsp;w: weight decay  default= 0.0000001
+&nbsp;&nbsp;l: learning rate defualt=0.001
+&nbsp;&nbsp;d: path file
+&nbsp;&nbsp;b: batch size, defualt=32
 
 python cvit_train.py -e 10 -s 'g' -l 0.0001 -w 0.0000001 -d sample_train_data/
