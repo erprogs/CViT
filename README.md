@@ -45,7 +45,7 @@ To train the model on your own you can use the following parameters:<br />
 python cvit_train.py -e 10 -s 'g' -l 0.0001 -w 0.0000001 -d sample_train_data/
 
 ### Authors
-**Deressa Wodajo
+**Deressa Wodajo**<br />
 **Solomon Atnafu (PhD)
 
 ### References
