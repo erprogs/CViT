@@ -34,7 +34,7 @@ python cvit_prediction.py <br />
 
 
 ### Train CViT
-To train the model on your own you can use the following parameter:<br />
+To train the model on your own you can use the following parameters:<br />
 &nbsp;&nbsp;e: epoch <br/>
 &nbsp;&nbsp;s: session - GPU or TPU <br/>
 &nbsp;&nbsp;w: weight decay  default= 0.0000001 <br/>
@@ -43,3 +43,10 @@ To train the model on your own you can use the following parameter:<br />
 &nbsp;&nbsp;b: batch size, defualt=32 <br/>
 
 python cvit_train.py -e 10 -s 'g' -l 0.0001 -w 0.0000001 -d sample_train_data/
+
+### Authors
+## Deressa Wodajo
+## Solomon Atnafu (PhD)
+
+### References
+Deressa Wodajo and Solomon Atnafu, "[Deepfake Video Detection Using Convolutional Vision Transformer](https://arxiv.org/abs/2102.11126)," arXiv preprints arXiv:2102.11126, 2021. 
