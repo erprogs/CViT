@@ -25,7 +25,7 @@ extractfaces.py<br />
 &nbsp;&nbsp;&nbsp;Face extraction from video. <br /> 
 &nbsp;&nbsp;&nbsp;The code works for DFDC dataset. You can test it using the sample data provided. 
 
-#### Predict CViT 
+### Predict CViT 
 
 python cvit_prediction.py <br />
 &nbsp;&nbsp;&nbsp; Predicts whether a video is Deepfake or not.<br />
