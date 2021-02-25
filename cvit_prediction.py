@@ -45,7 +45,7 @@ sample='sample__prediction_data/'
 ran = random.randint(0,400)
 ran_min = abs(ran-1)
 
-filenames = sorted([x for x in os.listdir(sample) if x[-4:] == ".mp4"])[:3]
+filenames = sorted([x for x in os.listdir(sample) if x[-4:] == ".mp4"])  #[:1] or [rand_min:ran]
 mtcnn = MTCNN(select_largest=False, keep_all=True, post_process=False, device=device)
 
 #load cvit model
