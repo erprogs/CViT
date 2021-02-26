@@ -13,10 +13,6 @@ Implementation code for our paper.
    * blazeface.py
    * blazeface.pth
 
-### Weights
-cvit_nov16_Auged_90p_50ep.pth <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CViT model weight, November 16, 2020, Augmentation=90%, Epoch=50.
-
 ### Preprocessing
 extractfaces.py<br />
 &nbsp;&nbsp;&nbsp;Face extraction from video. <br /> 
