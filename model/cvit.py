@@ -1,9 +1,6 @@
 import torch
 from torch import nn
 from einops import rearrange
-from fl import ConvBlock
-
-cnn = ConvBlock()
 
 class Residual(nn.Module):
     def __init__(self, fn):
@@ -80,10 +77,75 @@ class Transformer(nn.Module):
             x = ff(x)
         return x
 
-class CViT(nn.Module):
-    def __init__(self, *, image_size, patch_size, num_classes, dim, depth, heads, mlp_dim, channels=3):
-        super().__init__()
+class CViT(nn.Module): 
+    def __init__(self, image_size=224, patch_size=7, num_classes=2, channels=512, 
+                 dim=1024, depth=6, heads=8, mlp_dim=2048):
+        super().__init__() 
         assert image_size % patch_size == 0, 'image dimensions must be divisible by the patch size'
+
+        self.features = nn.Sequential(
+            
+            nn.Conv2d(3, 32, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=32),      
+            nn.ReLU(),
+            nn.Conv2d(32, 32, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=32),      
+            nn.ReLU(),
+            nn.Conv2d(32, 32, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=32),      
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            
+            nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=64),      
+            nn.ReLU(),
+            nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=64),      
+            nn.ReLU(),
+            nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=64),      
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+
+            nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=128),
+            nn.ReLU(),
+            nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=128),
+            nn.ReLU(),
+            nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=128),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+
+            nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=256),
+            nn.ReLU(),
+            nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=256),
+            nn.ReLU(),
+            nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=256),
+            nn.ReLU(),
+            nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=256),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+
+            nn.Conv2d(256, 512, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=512),
+            nn.ReLU(),
+            nn.Conv2d(512, 512, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=512),
+            nn.ReLU(),
+            nn.Conv2d(512, 512, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=512),
+            nn.ReLU(),
+            nn.Conv2d(512, 512, kernel_size=3, stride=1, padding=1),
+            nn.BatchNorm2d(num_features=512),
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2, stride=2)
+        )
         
         num_patches = (7 // patch_size) ** 2
         patch_dim = channels * patch_size ** 2
@@ -105,7 +167,7 @@ class CViT(nn.Module):
 
     def forward(self, img, mask=None):
         p = self.patch_size
-        x = cnn(img)
+        x = self.features(img)
         y = rearrange(x, 'b c (h p1) (w p2) -> b (h w) (p1 p2 c)', p1 = p, p2 = p)
         y = self.patch_to_embedding(y)
         cls_tokens = self.cls_token.expand(x.shape[0], -1, -1)
