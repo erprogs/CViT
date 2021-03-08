@@ -13,6 +13,8 @@ import sys
 import torch
 from blazeface import BlazeFace
 
+# code used to extract DFDC dataset
+
 dir_path = "dfdc_data/" 
 train_path = "dfdc_data/training_face_"
 validation_path = "dfdc_data/validation_face_"
@@ -38,10 +40,10 @@ def extract_face(dir_path):
         destination = train_path
         
         if (file_num > 34 and file_num<45):
-            destination = test_path 
+            destination = validation_path 
         
         if (file_num > 45):
-            destination = validation_path 
+            destination = test_path
         
         meta_full_path = os.path.join(dir_path, item)
         
@@ -62,6 +64,7 @@ def extract_face(dir_path):
                     # check if the file name is found in metadata, and its label
                     if filename.endswith(".mp4") and os.path.isfile(dir_path+item+'/'+filename):
                         label = data[filename]['label'].lower()
+                        # append fake video names with their corresponding real video names
                         original = ''
                         if data[filename]['label'].lower() == 'fake':
                             original = '_'+data[filename]['original'][:-4]
@@ -73,7 +76,7 @@ def extract_face(dir_path):
 
 # access video
 def process_video(video_path, filename, image_path, original):
-    gpu = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    gpu = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     facedet = BlazeFace().to(gpu)
     facedet.load_weights("blazeface.pth")
     facedet.load_anchors("anchors.npy")
@@ -83,11 +86,10 @@ def process_video(video_path, filename, image_path, original):
     from helpers_face_extract_1 import FaceExtractor
 
     frames_per_video = 10
-    #video_path="D:/dfdc_data/dfdc_train_part_0/aafezqchru.mp4" 
+     
     video_reader = VideoReader()
     video_read_fn = lambda x: video_reader.read_random_frames(x, num_frames=frames_per_video)
     face_extractor = FaceExtractor(video_read_fn, facedet)
-    
     
     faces = face_extractor.process_video(video_path)
     # Only look at one face per frame.
@@ -97,16 +99,13 @@ def process_video(video_path, filename, image_path, original):
         for face in frame_data["faces"]:
             face_locations = face_recognition.face_locations(face)
             for face_location in face_locations:
-                # Print the location of each face in this image
+            
                 top, right, bottom, left = face_location
-                #print("A face is located at pixel location Top: {}, Left: {}, Bottom: {}, Right: {}".format(top, left, bottom, right))
-    
-                # You can access the actual face itself like this:\n
                 face_image = face[top:bottom, left:right]
                 resized_face = cv2.resize(face_image, (224, 224), interpolation=cv2.INTER_AREA)
                 resized_face = cv2.cvtColor(resized_face, cv2.COLOR_RGB2BGR)
             
-                cv2.imwrite(image_path+"/"+filename[:-4]+original+"_"+str(n)+".jpg",resized_face, [int(cv2.IMWRITE_JPEG_QUALITY), 75])
+                cv2.imwrite(image_path+"/"+filename[:-4]+original+"_"+str(n)+".jpg",resized_face, [int(cv2.IMWRITE_JPEG_QUALITY), 85])
                 
                 n += 1
 
