@@ -3,12 +3,12 @@ import torch
 from torchvision import transforms, datasets
 from augmentation import Aug
 
-#INSTALL TPU Environment USING THIS CODE    
+#Install TPU environment using this code    
 #!curl install https://raw.githubusercontent.com/pytorch/xla/master/contrib/scripts/env-setup.py -o pytorch-xla-env-setup.py
 #!python pytorch-xla-env-setup.py --apt-packages libomp5 libopenblas-dev
 
-mean = [0.485, 0.456, 0.406]#[0.4718, 0.3467, 0.3154] 
-std = [0.229, 0.224, 0.225] #[0.1656, 0.1432, 0.1364]
+mean = [0.485, 0.456, 0.406] #[0.4718, 0.3467, 0.3154] DFDC dataset mean and standard 
+std = [0.229, 0.224, 0.225]  #[0.1656, 0.1432, 0.1364]
 
 data_transforms = {
     'train': transforms.Compose([
@@ -36,16 +36,16 @@ def session(cession='g', data_dir = 'sample/', batch_size=32):
                   for x in ['train', 'validation', 'test']}
     
     if cession=='t':
-        dataloaders, dataset_sizes = load_tpu(image_datasets, batch_size, data_dir, )
+        dataloaders, dataset_sizes = load_tpu(image_datasets, batch_size, data_dir)
         return batch_size, dataloaders, dataset_sizes
     else:
-        dataloaders, dataset_sizes = load_gpu(image_datasets, batch_size, data_dir, )
+        dataloaders, dataset_sizes = load_gpu(image_datasets, batch_size, data_dir)
         return batch_size, dataloaders, dataset_sizes
 
 def load_gpu(image_datasets, batch_size, data_dir):
     
     dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size,
-                                                 shuffle=True, num_workers=0) 
+                                                 shuffle=True, num_workers=0, pin_memory=True)
                    for x in ['train', 'validation', 'test']}
     dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'validation', 'test']}
     
@@ -79,8 +79,9 @@ def load_tpu(batch_size, data_dir):
       image_datasets[x],
       batch_size,
       sampler=train_sampler[x],
-      num_workers=4,
-      drop_last=True) for x in ['train', 'validation', 'test']}
+      num_workers=0,
+      drop_last=True,
+      pin_memory=True) for x in ['train', 'validation', 'test']}
 
     # Scale learning rate to world size
     lr = 0.0001 * xm.xrt_world_size()
