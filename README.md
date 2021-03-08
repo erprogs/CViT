@@ -5,7 +5,7 @@ Implementation code for our paper.
 [link to paper](https://arxiv.org/abs/2102.11126)
 
 ### Requirements:
-* Pytorch 1.4
+* Pytorch >=1.4
 
 ### DL library used for face extraction
    * helpers_read_video_1.py
@@ -17,6 +17,10 @@ Implementation code for our paper.
 extractfaces.py<br />
 &nbsp;&nbsp;&nbsp;Face extraction from video. <br /> 
 &nbsp;&nbsp;&nbsp;The code works for DFDC dataset. You can test it using the sample data provided. 
+
+### Weigths
+deepfake_cvit_gpu_ep_50.pth - Full model weight. <br />
+deepfake_cvit_gpu_inference_ep_50.pth - For detection. <br />
 
 ### Predict CViT 
 
