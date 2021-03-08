@@ -7,11 +7,9 @@ from torchvision import transforms, datasets
 import torch.optim as optim
 from torch.optim import lr_scheduler
 from torch import nn
-import torch.nn.functional as F
 import time
 import copy
 import pickle
-from PIL import ImageFile, Image
 
 sys.path.insert(1,'helpers')
 sys.path.insert(1,'model')
@@ -22,7 +20,7 @@ from cvit import CViT
 from loader import session
 import optparse
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 #Default
 cession='g' # GPU runtime 
@@ -64,7 +62,7 @@ if cession=='t':
     device = xm.xla_device()
 
 batch_size, dataloaders, dataset_sizes = session(cession, dir_path, batch_size)
-print(dataloaders)
+
 #CViT model definition
 model = CViT(image_size=224, patch_size=7, num_classes=2, channels=512,
             dim=1024, depth=6, heads=8, mlp_dim=2048)
@@ -90,8 +88,7 @@ def train_tpu(model, criterion, optimizer, scheduler, num_epochs, min_val_loss):
     val_loss = []
     val_accu = []
 
-    # load previous model state
-    #with open('weight/cvit_nov16_Auged_90p_50ep.pkl', 'rb') as f:
+    #with open('weight/cvit_deepfake_detection_ep_50.pkl', 'rb') as f:
     #    train_loss, train_accu, val_loss, val_accu = pickle.load(f)
 
     for epoch in range(num_epochs):
@@ -142,7 +139,6 @@ def train_tpu(model, criterion, optimizer, scheduler, num_epochs, min_val_loss):
                 running_loss += loss.item() * inputs.size(0)
                 running_corrects += torch.sum(preds == labels.data)
             if phase == 'train':
-                #print()
                 scheduler.step()
 
             epoch_loss = running_loss / dataset_sizes[phase]
@@ -170,14 +166,14 @@ def train_tpu(model, criterion, optimizer, scheduler, num_epochs, min_val_loss):
     # load best model weights
     model.load_state_dict(best_model_wts)
 
-    with open('weight/new_model_state.pkl', 'wb') as f:
+    with open('weight/cvit_deepfake_detection_v2.pkl', 'wb') as f:
         pickle.dump([train_loss, train_accu, val_loss, val_accu], f)
 
-    state = {'epoch': num_epochs+1, 
+    state = {'epoch': num_epochs, 
              'state_dict': model.state_dict(),
              'optimizer': optimizer.state_dict(),
              'min_loss':epoch_loss}
-    torch.save(state, 'weight/CViT_Deepfake_new_model_weight.pth')
+    torch.save(state, 'weight/cvit_deepfake_detection_v2.pth')
 
     return train_loss,train_accu,val_loss,val_accu, min_loss
 
@@ -195,7 +191,7 @@ def train_gpu(model, criterion, optimizer, scheduler, num_epochs, min_val_loss):
     val_loss = []
     val_accu = []
 
-    #with open('weight/cvit_nov16_Auged_90p_50ep.pkl', 'rb') as f:
+    #with open('weight/cvit_deepfake_detection_ep_50.pkl', 'rb') as f:
     #    train_loss, train_accu, val_loss, val_accu = pickle.load(f)
 
     for epoch in range(num_epochs):
@@ -272,14 +268,14 @@ def train_gpu(model, criterion, optimizer, scheduler, num_epochs, min_val_loss):
     # load best model weights
     model.load_state_dict(best_model_wts)
 
-    with open('weight/new_model_state.pkl', 'wb') as f:
+    with open('weight/cvit_deepfake_detection_v2.pkl', 'wb') as f:
         pickle.dump([train_loss, train_accu, val_loss, val_accu], f)
 
     state = {'epoch': num_epochs+1, 
              'state_dict': model.state_dict(),
              'optimizer': optimizer.state_dict(),
              'min_loss':epoch_loss}
-    torch.save(state, 'weight/cvit_deepfake_new_model_state.pth')
+    torch.save(state, 'weight/cvit_deepfake_detection_v2.pth')
     test(model)
     return train_loss,train_accu,val_loss,val_accu, min_loss
 

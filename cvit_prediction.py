@@ -7,14 +7,13 @@ import torch.nn as nn
 import glob
 import torch.optim as optim
 import numpy as np
-from PIL import Image, ImageDraw
 from time import perf_counter
-from torchvision import datasets, models, transforms
+from torchvision import transforms
 import pandas as pd
 import json
 import face_recognition
 import random
-import sys
+from concurrent.futures import ThreadPoolExecutor
 
 sys.path.insert(1,'helpers')
 sys.path.insert(1,'model')
@@ -45,20 +44,18 @@ sample='sample__prediction_data/'
 ran = random.randint(0,400)
 ran_min = abs(ran-1)
 
-filenames = sorted([x for x in os.listdir(sample) if x[-4:] == ".mp4"])  #[:1] or [rand_min:ran]
+filenames = sorted([x for x in os.listdir(sample) if x[-4:] == ".mp4"]) #[ran_min, ran] -  select video randomly
 mtcnn = MTCNN(select_largest=False, keep_all=True, post_process=False, device=device)
 
 #load cvit model
-modelCViT = CViT(image_size=224, patch_size=7, num_classes=2, channels=512,
-            dim=1024, depth=6, heads=8, mlp_dim=2048)
-modelCViT.to(device)
+model = CViT(image_size=224, patch_size=7, num_classes=2, channels=512,
+             dim=1024, depth=6, heads=8, mlp_dim=2048)
+model.to(device)
 
-#checkpointCViT = torch.load('weight/cvt_nov16_Auged_90p_50ep.pth') # for GPU
-checkpointCViT = torch.load('weight/cvit_nov16_Auged_90p_50ep.pth',map_location=torch.device('cpu'))
-modelCViT.load_state_dict(checkpointCViT['state_dict'])
-_ = modelCViT.eval()
-
-from concurrent.futures import ThreadPoolExecutor
+#checkpoint = torch.load('weight/deepfake_cvit_gpu_inference_ep_50.pth') # for GPU
+checkpoint = torch.load('weight/deepfake_cvit_gpu_inference_ep_50.pth', map_location=torch.device('cpu'))
+model.load_state_dict(checkpoint)
+_ = model.eval()
 
 def predict_on_video(dfdc_filenames, num_workers):
     def process_file(i):
@@ -71,7 +68,7 @@ def predict_on_video(dfdc_filenames, num_workers):
         predictions = ex.map(process_file, range(len(dfdc_filenames)))
     return list(predictions)
 
-# MTCNN FACE EXTCTACTION
+# MTCNN face extctaction
 def face_mtcnn(frame, face_tensor_mtcnn):
     mtcnn_frame = mtcnn.detect(frame)
     temp_face = np.zeros((5, 224, 224, 3), dtype=np.uint8)
@@ -89,7 +86,7 @@ def face_mtcnn(frame, face_tensor_mtcnn):
         return [],0
     return temp_face[:count], count
 
-# face_recognition FACE EXTCTACTION
+# face_recognition face extctaction
 def face_face_rec(frame, face_tensor_face_rec):
     
     face_locations = face_recognition.face_locations(frame)
@@ -101,13 +98,14 @@ def face_face_rec(frame, face_tensor_face_rec):
             face_image = frame[top:bottom, left:right]
             face_image = cv2.resize(face_image, (224, 224), interpolation=cv2.INTER_AREA)
             face_image = cv2.cvtColor(face_image, cv2.COLOR_RGB2BGR)
+            #face_image = Image.fromarray(face_image)
             temp_face[count]=face_image
             count+=1
     if count == 0:
         return [],0
     return temp_face[:count], count
 
-# blazeface FACE EXTCTACTION
+# blazeface face extctaction
 def face_blaze(video_path, filename, face_tensor_blaze):
 
     frames_per_video = 45  
@@ -183,6 +181,7 @@ def predict(filename, tresh, mtcnn):
             start_frame_number+=frame_jump
     
     #face_tensor_blaze, count_blaze = face_blaze(filename, count_blaze, face_tensor_blaze)
+
     store_rec= face_tensor_face_rec[:count_face_rec]
     #store_blaze = face_tensor_blaze[:count_blaze]
     #store_mtcnn = face_tensor_mtcnn[:count_mtcn]
@@ -210,16 +209,16 @@ def predict(filename, tresh, mtcnn):
         thrtw =32
         if df_len<33:
             thrtw =df_len  
-        y_predCViT = modelCViT(dfdc_tensor[0:thrtw])
+        y_predCViT = model(dfdc_tensor[0:thrtw])
         
         if df_len>32:
             dft = non_empty(dfdc_tensor, df_len, lower_bound=32, upper_bound=64, flag=True)
             if len(dft):
-                y_predCViT = pred_tensor(y_predCViT, modelCViT(dft))
+                y_predCViT = pred_tensor(y_predCViT, model(dft))
         if df_len>64:
             dft = non_empty(dfdc_tensor, df_len, lower_bound=64, upper_bound=90, flag=True)
             if len(dft):
-                y_predCViT = pred_tensor(y_predCViT, modelCViT(dft))
+                y_predCViT = pred_tensor(y_predCViT, model(dft))
         
         decCViT = pre_process_prediction(pred_sig(y_predCViT))
         print('CViT', filename, "Prediction:",decCViT.item())
@@ -263,12 +262,13 @@ def pre_process_prediction(y_pred):
     
 start_time = perf_counter()
 predictions = predict_on_video(filenames, num_workers=4)
+print(predictions)
 end_time = perf_counter()
 print("--- %s seconds ---" % (end_time - start_time))
 
 # for testing DFDC dataset
-'''
-metafile = sample+'metadata.json'
+
+'''metafile = sample+'metadata.json'
 if os.path.isfile(metafile):
     with open(metafile) as data_file:
         data = json.load(data_file)
@@ -279,10 +279,10 @@ def real_or_fake(filenames, predictions):
     correct = 0
     label="REAL"
     for i in filenames:
-        if data[i]['label'] == 'REAL' and predictions<0.5:
+        if data[i]['label'] == 'REAL' and predictions[j]<0.5:
             correct+=1
             label="REAL"
-        if data[i]['label'] == 'FAKE' and predictions>=0.5:
+        if data[i]['label'] == 'FAKE' and predictions[j]>=0.5:
             correct+=1
             label="FAKE"
         
@@ -290,8 +290,8 @@ def real_or_fake(filenames, predictions):
         j+=1
         
     return correct
-print('Accuracy: ', (real_or_fake(filenames, predictions)/len(filenames))*100)
-'''
+print('Accuracy: ', (real_or_fake(filenames, predictions)/len(filenames))*100)'''
+
 
 def real_or_fake(filenames, predictions): 
     j=0
@@ -308,5 +308,5 @@ def real_or_fake(filenames, predictions):
         
 real_or_fake(filenames, predictions)
 submission_dfcvit_nov16 = pd.DataFrame({"filename": filenames, "label": predictions})
-submission_dfcvit_nov16.to_csv("sub_cvit_nov16.csv", index=False)
+submission_dfcvit_nov16.to_csv("cvit_predictions.csv", index=False)
     
