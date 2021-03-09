@@ -18,7 +18,7 @@ extractfaces.py<br />
 &nbsp;&nbsp;&nbsp;Face extraction from video. <br /> 
 &nbsp;&nbsp;&nbsp;The code works for DFDC dataset. You can test it using the sample data provided. 
 
-### Weigths
+### Weights
 deepfake_cvit_gpu_ep_50.pth - Full model weight. <br />
 deepfake_cvit_gpu_inference_ep_50.pth - For detection. <br />
 
