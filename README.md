@@ -35,7 +35,7 @@ To train the model on your own you can use the following parameters:<br />
 &nbsp;&nbsp;e: epoch <br/>
 &nbsp;&nbsp;s: session - **(g)** - GPU or **(t)** - TPU <br/>
 &nbsp;&nbsp;w: weight decay  default= 0.0000001 <br/>
-&nbsp;&nbsp;l: learning rate defualt=0.001 <br/>
+&nbsp;&nbsp;l: learning rate default=0.001 <br/>
 &nbsp;&nbsp;d: path file <br/>
 &nbsp;&nbsp;b: batch size, defualt=32 <br/>
 
