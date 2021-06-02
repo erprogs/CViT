@@ -13,14 +13,13 @@ def strong_aug(p=.5):
         HorizontalFlip(p=0.5),   
         VerticalFlip(p=0.5),
         OneOf([
-            IAAAdditiveGaussianNoise(),
             GaussNoise(),
         ], p=0.2),
         ShiftScaleRotate(p=0.2),
         OneOf([
             CLAHE(clip_limit=2),
-            IAASharpen(),
-            IAAEmboss(),
+            Sharpen(),
+            Emboss(),
             RandomBrightnessContrast(),
         ], p=0.2),
         HueSaturationValue(p=0.2),
