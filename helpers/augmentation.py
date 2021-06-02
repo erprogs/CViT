@@ -1,7 +1,7 @@
 from albumentations import (
     HorizontalFlip, VerticalFlip, ShiftScaleRotate, CLAHE, RandomRotate90,
-    Transpose, ShiftScaleRotate, HueSaturationValue, IAAAdditiveGaussianNoise, 
-    GaussNoise, IAASharpen, IAAEmboss, RandomBrightnessContrast, OneOf, Compose
+    Transpose, ShiftScaleRotate, HueSaturationValue, 
+    GaussNoise, Sharpen, Emboss, RandomBrightnessContrast, OneOf, Compose
 )
 import numpy as np
 from PIL import Image
