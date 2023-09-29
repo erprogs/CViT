@@ -2,7 +2,7 @@
 ### Deepfake Video Detection Using Convolutional Vision Transformer
 
 Implementation code for our paper. 
-[link to paper](https://arxiv.org/abs/2102.11126) | [link to MS Thesis](http://etd.aau.edu.et/handle/123456789/24209)
+[link to paper](https://arxiv.org/abs/2102.11126) | [link to MS Thesis](http://etd.aau.edu.et/handle/123456789/24209) [link to MS Thesis defense PPT file](https://github.com/erprogs/CViT/blob/main/CViT.pptx)
 
 ### Requirements:
 * Pytorch >=1.4
