@@ -1,7 +1,7 @@
 # CViT
 ### Deepfake Video Detection Using Convolutional Vision Transformer
 
-### Update, April 1, 2024
+## Update, April 1, 2024
 
 # CViT2
 ### Improved Deepfake Video Detection Using Convolutional Vision Transformer
