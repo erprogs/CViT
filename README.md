@@ -1,8 +1,8 @@
 # CViT
 ### Deepfake Video Detection Using Convolutional Vision Transformer
 
-# Update, April 1, 2024
-------------------------------------------------------------------------
+### Update, April 1, 2024
+
 # CViT2
 ### Improved Deepfake Video Detection Using Convolutional Vision Transformer
 
@@ -23,7 +23,7 @@ Implementation code for our paper.
 
 ### Preprocessing
 
-    extractfaces.py
+extractfaces.py
     Face extraction from video.
     The code works for DFDC dataset. You can test it using the sample data provided.
 
@@ -46,27 +46,27 @@ E.g usage:
 
 #### Arguments
 
-    Predicts whether a video is Deepfake or not.<br />
-    Prediction value <0.5 - REAL <br />
-    Prediction value >=5  - FAKE
+Predicts whether a video is Deepfake or not.<br />
+Prediction value <0.5 - REAL <br />
+Prediction value >=5  - FAKE
 
-    --p (str): Path to the video or image file for prediction.
-        Example: --p /path/to/video.mp4
+&nbsp;&nbsp;&nbsp;&nbsp; --p (str): Path to the video or image file for prediction.
+&nbsp;&nbsp;&nbsp;&nbsp;    Example: --p /path/to/video.mp4
 
-    --f (int): Number of frames to process for prediction.
-        Example: --f 30
+&nbsp;&nbsp;&nbsp;&nbsp; --f (int): Number of frames to process for prediction.
+&nbsp;&nbsp;&nbsp;&nbsp;    Example: --f 30
 
-    --d (str): Dataset type. Options are dfdc, faceforensics, timit, or celeb.
-        Example: --d dfdc
+&nbsp;&nbsp;&nbsp;&nbsp; --d (str): Dataset type. Options are dfdc, faceforensics, timit, or celeb.
+&nbsp;&nbsp;&nbsp;&nbsp;    Example: --d dfdc
 
-    --w (str): Path to the model weights for CViT or CViT2.
-        Example: --w /path/to/weights.pth
+&nbsp;&nbsp;&nbsp;&nbsp; --w (str): Path to the model weights for CViT or CViT2.
+&nbsp;&nbsp;&nbsp;&nbsp;    Example: --w /path/to/weights.pth
 
-    --n (str): Network type. Options are cvit or cvit2.
-        Example: --n cvit
+&nbsp;&nbsp;&nbsp;&nbsp; --n (str): Network type. Options are cvit or cvit2.
+&nbsp;&nbsp;&nbsp;&nbsp;    Example: --n cvit
 
-    --fp16 (str): Enable half-precision support. Accepts a boolean value (true or false).
-        Example: --fp16 true
+&nbsp;&nbsp;&nbsp;&nbsp; --fp16 (str): Enable half-precision support. Accepts a boolean value (true or false).
+&nbsp;&nbsp;&nbsp;&nbsp;    Example: --fp16 true
 
 
 ### Train CViT
@@ -76,12 +76,12 @@ To train the model on your own you can use the following parameters:<br />
 
 ### Options
 
-    -e, --epoch (int): Number of training epochs, defualt=1.
-    -d, --dir (str): Path to the training data.
-    -b, --batch (int): Batch size, defualt=32.
-    -l, --rate (float): Learning rate, default=0.001.
-    -w, --wdecay (float): Weight decay, default= 0.0000001 .
-    -t, --test (str): Test on test set (e.g., y).
+&nbsp;&nbsp;&nbsp;&nbsp; -e, --epoch (int): Number of training epochs, defualt=1.
+&nbsp;&nbsp;&nbsp;&nbsp; -d, --dir (str): Path to the training data.
+&nbsp;&nbsp;&nbsp;&nbsp; -b, --batch (int): Batch size, defualt=32.
+&nbsp;&nbsp;&nbsp;&nbsp; -l, --rate (float): Learning rate, default=0.001.
+&nbsp;&nbsp;&nbsp;&nbsp; -w, --wdecay (float): Weight decay, default= 0.0000001 .
+&nbsp;&nbsp;&nbsp;&nbsp; -t, --test (str): Test on test set (e.g., y).
 
 
 ### Authors
@@ -107,7 +107,7 @@ To train the model on your own you can use the following parameters:<br />
 ```bash
 @inproceedings{wodajo2024deepfake,
     title={Improved Deepfake Video Detection Using Convolutional Vision Transformer},
-    author={Deressa Wodajo and Peter Lambert and Glenn Van Wallendael and Solomon Atnafu and Hannes Mareen},
+    author={Deressa Wodajo, Peter Lambert, Glenn Van Wallendael, Solomon Atnafu and Hannes Mareen},
     booktitle={Proceedings of the IEEE International Conference on Games, Entertainment & Media (GEM)},
     year={2024},
     month={June},
