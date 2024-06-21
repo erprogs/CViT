@@ -147,12 +147,13 @@ class CViT(nn.Module):
             nn.MaxPool2d(kernel_size=2, stride=2)
         )
         
-        num_patches = (7 // patch_size) ** 2
+        num_patches = (image_size // patch_size) ** 2
+        self.max_sequence_length = num_patches+1
         patch_dim = channels * patch_size ** 2
 
         self.patch_size = patch_size
 
-        self.pos_embedding = nn.Parameter(torch.randn(32, 1, dim))
+        self.pos_embedding = nn.Parameter(torch.randn(1, self.max_sequence_length, dim))
         self.patch_to_embedding = nn.Linear(patch_dim, dim)
         self.cls_token = nn.Parameter(torch.randn(1, 1, dim))
         self.transformer = Transformer(dim, depth, heads, mlp_dim)
@@ -169,12 +170,13 @@ class CViT(nn.Module):
         p = self.patch_size
         x = self.features(img)
         y = rearrange(x, 'b c (h p1) (w p2) -> b (h w) (p1 p2 c)', p1 = p, p2 = p)
+
         y = self.patch_to_embedding(y)
-        cls_tokens = self.cls_token.expand(x.shape[0], -1, -1)
-        x = torch.cat((cls_tokens, y), 1)
-        shape=x.shape[0]
-        x += self.pos_embedding[0:shape]
+        cls_tokens = self.cls_token.expand(y.shape[0], -1, -1)
+        x = torch.cat((cls_tokens, y), dim=1)
+
+        x += self.pos_embedding[:, :x.size(1)]  
         x = self.transformer(x, mask)
         x = self.to_cls_token(x[:, 0])
-        
+
         return self.mlp_head(x)
