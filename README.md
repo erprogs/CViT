@@ -66,7 +66,7 @@ Prediction value >=5  - FAKE
 
 &nbsp;&nbsp;&nbsp;&nbsp; --w (str): Path to the model weights for CViT or CViT2.
 
-&nbsp;&nbsp;&nbsp;&nbsp;    Example: --w /path/to/weights.pth
+&nbsp;&nbsp;&nbsp;&nbsp;    Example: --w cvit2_deepfake_detection_ep_50
 
 &nbsp;&nbsp;&nbsp;&nbsp; --n (str): Network type. Options are cvit or cvit2.
 
