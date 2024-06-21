@@ -289,13 +289,15 @@ def gen_parser():
     path = args.p if args.p else 'sample_prediction_data'
     num_frames = args.f if args.f else 15
     dataset = args.d if args.d else "other"
-    net = args.n if args.n in ["cvit", "cvit2"] else "cvit"
+    net = args.n if args.n in ["cvit", "cvit2"] else "cvit2"
     fp16 = True if args.fp16 else False
 
-    if args.w and net == 'cvit':
+    if args.w and net in ['cvit','cvit2']:
         cvit_weight = args.w
     else:
-        cvit_weight = 'cvit2_inference'#cvit_deepfake_detection_June_19_2024_13_41_11'
+        cvit_weight = 'cvit2_deepfake_detection_ep_50'
+    
+    print(f'\nUsing Model: {net}, \nWeight: {cvit_weight}')
 
     cvit_weight +='.pth'
     return path, dataset, num_frames, net, fp16, cvit_weight

@@ -59,8 +59,7 @@ E.g usage:
 
 ```python cvit_prediction.py --p sample__prediction_data --f 15 --n cvit2 --fp16 y ```
 
-DFDC
-
+predict DFDC:
 ```python cvit_prediction.py --p dfdc_vidoes --d dfdc --f 15 --n cvit2 --fp16 y ```
 
 
