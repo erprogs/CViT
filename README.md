@@ -53,21 +53,27 @@ Prediction value <0.5 - REAL <br />
 Prediction value >=5  - FAKE
 
 &nbsp;&nbsp;&nbsp;&nbsp; --p (str): Path to the video or image file for prediction.
+
 &nbsp;&nbsp;&nbsp;&nbsp;    Example: --p /path/to/video.mp4
 
 &nbsp;&nbsp;&nbsp;&nbsp; --f (int): Number of frames to process for prediction.
+
 &nbsp;&nbsp;&nbsp;&nbsp;    Example: --f 30
 
 &nbsp;&nbsp;&nbsp;&nbsp; --d (str): Dataset type. Options are dfdc, faceforensics, timit, or celeb.
+
 &nbsp;&nbsp;&nbsp;&nbsp;    Example: --d dfdc
 
 &nbsp;&nbsp;&nbsp;&nbsp; --w (str): Path to the model weights for CViT or CViT2.
+
 &nbsp;&nbsp;&nbsp;&nbsp;    Example: --w /path/to/weights.pth
 
 &nbsp;&nbsp;&nbsp;&nbsp; --n (str): Network type. Options are cvit or cvit2.
+
 &nbsp;&nbsp;&nbsp;&nbsp;    Example: --n cvit
 
 &nbsp;&nbsp;&nbsp;&nbsp; --fp16 (str): Enable half-precision support. Accepts a boolean value (true or false).
+
 &nbsp;&nbsp;&nbsp;&nbsp;    Example: --fp16 true
 
 
@@ -79,10 +85,15 @@ To train the model on your own you can use the following parameters:<br />
 ### Options
 
 &nbsp;&nbsp;&nbsp;&nbsp; -e, --epoch (int): Number of training epochs, defualt=1.
+
 &nbsp;&nbsp;&nbsp;&nbsp; -d, --dir (str): Path to the training data.
+
 &nbsp;&nbsp;&nbsp;&nbsp; -b, --batch (int): Batch size, defualt=32.
+
 &nbsp;&nbsp;&nbsp;&nbsp; -l, --rate (float): Learning rate, default=0.001.
-&nbsp;&nbsp;&nbsp;&nbsp; -w, --wdecay (float): Weight decay, default= 0.0000001 .
+
+&nbsp;&nbsp;&nbsp;&nbsp; -w, --wdecay (float): Weight decay, default= 0.0000001.
+
 &nbsp;&nbsp;&nbsp;&nbsp; -t, --test (str): Test on test set (e.g., y).
 
 
