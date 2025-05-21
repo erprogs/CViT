@@ -10,7 +10,7 @@ Implementation code for our paper.
 # CViT2
 ### Improved Deepfake Video Detection Using Convolutional Vision Transformer
 
-###### You can run both version by using `--n cvit` or `cvit2`
+###### You can run both version by using `--n cvit` or `--n cvit2`
 
 ### Requirements:
 * Pytorch >=1.4
