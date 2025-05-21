@@ -7,7 +7,6 @@ from torchvision import transforms
 import numpy as np
 from tqdm import tqdm
 from PIL import Image
-from model.cvit import CViT 
 from helpers.loader import *
 from facenet_pytorch import MTCNN
 from decord import VideoReader, cpu
@@ -26,8 +25,13 @@ facedet.load_weights("helpers/blazeface.pth")
 facedet.load_anchors("helpers/anchors.npy")
 _ = facedet.train(False)
 
-def load_cvit(cvit_weight, fp16):
-    model = CViT(image_size=224, patch_size=7, num_classes=2, channels=512,
+def load_cvit(cvit_weight, net, fp16):
+    
+    from model.cvit import CViT as cvit # load cvit2
+    if net == 'cvit':
+        from model.cvit_old import CViT as cvit
+
+    model = cvit(image_size=224, patch_size=7, num_classes=2, channels=512,
              dim=1024, depth=6, heads=8, mlp_dim=2048)
 
     model.to(device)

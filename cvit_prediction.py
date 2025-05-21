@@ -6,6 +6,7 @@ from time import perf_counter
 from datetime import datetime
 from facenet_pytorch import MTCNN
 from model.cvit import CViT
+#from model.cvit_old import CViT as CViTO
 from helpers.loader import load_data
 from model.pred_func import *
 
@@ -18,11 +19,11 @@ def vids(
     f = 0
     count = 0
     
-    model = load_cvit(cvit_weight, fp16)
+    model = load_cvit(cvit_weight, net, fp16)
 
     for filename in os.listdir(root_dir):
         curr_vid = os.path.join(root_dir, filename)
-
+        
         try:
             if is_video(curr_vid):
                 result, accuracy, count, pred = predict(
@@ -248,7 +249,7 @@ def predict(
     df = df_face(vid, num_frames)  # extract face from the frames
 
     if fp16:
-        df.half()
+        df = df.half()
     y, y_val = (
         pred_vid(df, model)
         if len(df) >= 1
@@ -294,6 +295,8 @@ def gen_parser():
 
     if args.w and net in ['cvit','cvit2']:
         cvit_weight = args.w
+    elif net == 'cvit':
+        cvit_weight = 'deepfake_cvit_gpu_inference_ep_50'
     else:
         cvit_weight = 'cvit2_deepfake_detection_ep_50'
     
@@ -314,7 +317,7 @@ def main():
 
     curr_time = datetime.now().strftime("%B_%d_%Y_%H_%M_%S")
     file_path = os.path.join("result", f"prediction_{dataset}_{net}_{curr_time}.json")
-
+    
     with open(file_path, "w") as f:
         json.dump(result, f)
     end_time = perf_counter()
